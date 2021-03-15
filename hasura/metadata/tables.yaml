@@ -1,0 +1,72 @@
+- table:
+    schema: public
+    name: blocks_log
+  select_permissions:
+  - role: front
+    permission:
+      columns:
+      - last_processed_block
+      - last_updated_at
+      - zone
+      filter: {}
+      limit: 1
+- table:
+    schema: public
+    name: ibc_channels
+  select_permissions:
+  - role: front
+    permission:
+      columns:
+      - zone
+      - connection_id
+      - channel_id
+      - is_opened
+      - added_at
+      filter: {}
+      limit: 10000
+      allow_aggregations: true
+- table:
+    schema: public
+    name: ibc_clients
+  select_permissions:
+  - role: front
+    permission:
+      columns:
+      - zone
+      - client_id
+      - chain_id
+      - added_at
+      filter: {}
+      limit: 9992
+      allow_aggregations: true
+- table:
+    schema: public
+    name: ibc_connections
+  select_permissions:
+  - role: front
+    permission:
+      columns:
+      - zone
+      - connection_id
+      - client_id
+      - added_at
+      filter: {}
+      limit: 10000
+      allow_aggregations: true
+- table:
+    schema: public
+    name: zones
+  select_permissions:
+  - role: front
+    permission:
+      columns:
+      - name
+      - chain_id
+      - description
+      - is_enabled
+      - added_at
+      - is_caught_up
+      - updated_at
+      filter: {}
+      limit: 10000
+      allow_aggregations: true
