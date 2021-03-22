@@ -1,6 +1,10 @@
 - table:
     schema: public
     name: blocks_log
+  object_relationships:
+  - name: zoneByZone
+    using:
+      foreign_key_constraint_on: zone
   select_permissions:
   - role: front
     permission:
@@ -13,6 +17,16 @@
 - table:
     schema: public
     name: ibc_channels
+  object_relationships:
+  - name: ibc_connection
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: ibc_connections
+        column_mapping:
+          zone: zone
+          connection_id: connection_id
   select_permissions:
   - role: front
     permission:
@@ -28,6 +42,23 @@
 - table:
     schema: public
     name: ibc_clients
+  object_relationships:
+  - name: zoneByChainId
+    using:
+      foreign_key_constraint_on: chain_id
+  - name: zoneByZone
+    using:
+      foreign_key_constraint_on: zone
+  array_relationships:
+  - name: ibc_connections
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: ibc_connections
+        column_mapping:
+          client_id: client_id
+          zone: zone
   select_permissions:
   - role: front
     permission:
@@ -42,6 +73,26 @@
 - table:
     schema: public
     name: ibc_connections
+  object_relationships:
+  - name: ibc_client
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: ibc_clients
+        column_mapping:
+          client_id: client_id
+          zone: zone
+  array_relationships:
+  - name: ibc_channels
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: ibc_channels
+        column_mapping:
+          zone: zone
+          connection_id: connection_id
   select_permissions:
   - role: front
     permission:
@@ -56,6 +107,28 @@
 - table:
     schema: public
     name: zones
+  array_relationships:
+  - name: blocks_logs
+    using:
+      foreign_key_constraint_on:
+        column: zone
+        table:
+          schema: public
+          name: blocks_log
+  - name: ibc_clients
+    using:
+      foreign_key_constraint_on:
+        column: chain_id
+        table:
+          schema: public
+          name: ibc_clients
+  - name: ibcClientsByZone
+    using:
+      foreign_key_constraint_on:
+        column: zone
+        table:
+          schema: public
+          name: ibc_clients
   select_permissions:
   - role: front
     permission:
