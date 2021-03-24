@@ -16,6 +16,18 @@
       limit: 1
 - table:
     schema: public
+    name: fn_table_ibc_chain_graph_edges
+  select_permissions:
+  - role: front
+    permission:
+      columns:
+      - counterparty_zone
+      - zone
+      filter: {}
+      limit: 10000
+      allow_aggregations: true
+- table:
+    schema: public
     name: ibc_channels
   object_relationships:
   - name: ibc_connection
